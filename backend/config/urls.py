@@ -1,8 +1,9 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from feedback.views import CronJobView
+from .views import serve_react_app
 
 urlpatterns = [
     path('django-admin/', admin.site.urls),
@@ -22,3 +23,8 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# React Frontend SPA catch-all (Bosh sahifa va barcha sahifalarni React orqali ochadi)
+urlpatterns += [
+    re_path(r'^(?P<path>.*)$', serve_react_app, name='react-app'),
+]
