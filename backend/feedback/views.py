@@ -49,3 +49,51 @@ class ResendTelegramView(APIView):
             return Response({'success': ok, 'message': msg})
         except FeedbackMessage.DoesNotExist:
             return Response({'error': 'Xabar topilmadi'}, status=status.HTTP_404_NOT_FOUND)
+
+from django.db import connection
+from django.utils import timezone
+
+class CronJobView(APIView):
+    """
+    Render.com bepul rejimida server uxlab qolmasligi (Keep-Alive)
+    hamda Telegramga bormay qolgan xabarlarni qayta tekshirib yuborish uchun Cron API.
+    cron-job.org yoki UptimeRobot har 10-14 daqiqada GET yuborishi mumkin.
+    """
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        return self.execute_cron()
+
+    def post(self, request):
+        return self.execute_cron()
+
+    def execute_cron(self):
+        # 1. Ma'lumotlar bazasi ulanishini tekshirish
+        db_status = "connected"
+        try:
+            connection.ensure_connection()
+        except Exception as e:
+            db_status = f"error: {str(e)}"
+
+        # 2. Telegramga yetib bormagan xabarlarni avtomatik qayta yuborish
+        pending_messages = FeedbackMessage.objects.filter(sent_to_telegram=False)[:5]
+        retried_count = 0
+        success_count = 0
+
+        for msg_obj in pending_messages:
+            retried_count += 1
+            ok, _ = send_telegram_notification(msg_obj)
+            if ok:
+                success_count += 1
+
+        return Response({
+            "status": "healthy",
+            "server": "alive",
+            "timestamp": timezone.now().isoformat(),
+            "database": db_status,
+            "cron_tasks": {
+                "pending_messages_found": retried_count,
+                "successfully_resent": success_count,
+            },
+            "message": "She'riyat serveri faol va uyg'oq holatda saqlandi."
+        }, status=status.HTTP_200_OK)
