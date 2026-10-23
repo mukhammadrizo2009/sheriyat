@@ -19,30 +19,31 @@ export default function Navbar({
 
   return (
     <nav className="glass-nav">
-      <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '74px' }}>
+      <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '100%' }}>
         
         {/* Logo */}
         <div 
           onClick={() => setActiveTab('all')} 
-          style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}
+          style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}
         >
           <div style={{
-            width: '42px',
-            height: '42px',
-            borderRadius: '12px',
+            width: '38px',
+            height: '38px',
+            borderRadius: '10px',
             background: 'var(--accent-gold-light)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             color: 'var(--accent-gold)',
-            border: '1px solid rgba(194, 136, 41, 0.3)'
+            border: '1px solid rgba(194, 136, 41, 0.3)',
+            flexShrink: 0
           }}>
-            <Feather size={22} />
+            <Feather size={20} />
           </div>
           <div>
             <span style={{ 
               fontFamily: 'var(--font-serif)', 
-              fontSize: '1.45rem', 
+              fontSize: '1.35rem', 
               fontWeight: 700, 
               letterSpacing: '-0.02em',
               display: 'block',
@@ -50,14 +51,14 @@ export default function Navbar({
             }}>
               She'riyat
             </span>
-            <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+            <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
               Qalb sadosi
             </span>
           </div>
         </div>
 
-        {/* Center Nav Links */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        {/* Center Desktop Nav Links */}
+        <div className="desktop-nav-links" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <button 
             className={`btn ${activeTab === 'all' ? 'btn-secondary' : 'btn-ghost'}`}
             onClick={() => setActiveTab('all')}
@@ -91,7 +92,7 @@ export default function Navbar({
         </div>
 
         {/* Right Actions: Theme Toggle & Shoir Dashboard */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <button 
             className="btn btn-ghost btn-icon" 
             onClick={toggleTheme}
@@ -104,10 +105,10 @@ export default function Navbar({
           <button 
             className={`btn ${isPoetLoggedIn ? 'btn-primary' : 'btn-secondary'}`}
             onClick={openAdminModal}
-            style={{ fontSize: '0.86rem', padding: '8px 16px' }}
+            style={{ fontSize: '0.84rem', padding: '6px 14px' }}
           >
             <ShieldCheck size={16} />
-            {isPoetLoggedIn ? "Shoir Paneli" : "Shoir Kirish"}
+            <span>{isPoetLoggedIn ? "Kabinet" : "Shoir"}</span>
           </button>
         </div>
 

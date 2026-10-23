@@ -111,10 +111,12 @@ export default function ContactSection() {
               display: 'flex', 
               alignItems: 'center', 
               justifyContent: 'space-between',
-              padding: '12px 18px', 
+              flexWrap: 'wrap',
+              gap: '8px',
+              padding: '12px 16px', 
               background: 'var(--accent-gold-light)', 
               borderRadius: 'var(--radius-sm)',
-              marginBottom: '28px',
+              marginBottom: '24px',
               border: '1px solid rgba(194, 136, 41, 0.25)',
               fontSize: '0.88rem',
               color: 'var(--text-primary)'
@@ -141,7 +143,7 @@ export default function ContactSection() {
             </div>
 
             <form onSubmit={handleSubmit}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '14px', marginBottom: '16px' }}>
                 <div>
                   <label style={{ display: 'block', fontSize: '0.86rem', fontWeight: 600, marginBottom: '6px' }}>
                     Ismingiz <span style={{ color: 'var(--accent-rose)' }}>*</span>

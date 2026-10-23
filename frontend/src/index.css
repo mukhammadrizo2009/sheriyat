@@ -8,7 +8,7 @@
   --bg-secondary: #f4f0e6;
   --bg-card: #ffffff;
   --bg-card-hover: #faf8f2;
-  --bg-glass: rgba(255, 255, 255, 0.85);
+  --bg-glass: rgba(255, 255, 255, 0.92);
 
   --text-primary: #1f1d1a;
   --text-secondary: #5c5850;
@@ -48,7 +48,7 @@
   --bg-secondary: #17181d;
   --bg-card: #1c1d24;
   --bg-card-hover: #23252e;
-  --bg-glass: rgba(28, 29, 36, 0.85);
+  --bg-glass: rgba(28, 29, 36, 0.92);
 
   --text-primary: #f2eee6;
   --text-secondary: #aba598;
@@ -83,6 +83,7 @@ body {
   line-height: 1.6;
   transition: background-color var(--transition-slow), color var(--transition-slow);
   -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Typography styles */
@@ -107,8 +108,8 @@ h1, h2, h3, h4, .font-serif {
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: var(--bg-primary);
@@ -134,8 +135,8 @@ h1, h2, h3, h4, .font-serif {
   top: 0;
   z-index: 50;
   background: var(--bg-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border-color);
   transition: all var(--transition-normal);
 }
@@ -144,7 +145,7 @@ h1, h2, h3, h4, .font-serif {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: 24px;
+  padding: 22px;
   box-shadow: var(--shadow-sm);
   transition: all var(--transition-normal);
 }
@@ -158,16 +159,17 @@ h1, h2, h3, h4, .font-serif {
   cursor: pointer;
 }
 .card-clickable:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
 }
 
-/* Buttons */
+/* Buttons (Touch Friendly) */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   padding: 10px 20px;
+  min-height: 42px;
   border-radius: var(--radius-full);
   font-family: var(--font-sans);
   font-size: 0.925rem;
@@ -177,6 +179,7 @@ h1, h2, h3, h4, .font-serif {
   border: 1px solid transparent;
   outline: none;
   text-decoration: none;
+  user-select: none;
 }
 
 .btn-primary {
@@ -209,10 +212,11 @@ h1, h2, h3, h4, .font-serif {
 }
 
 .btn-icon {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   padding: 0;
   border-radius: var(--radius-full);
+  flex-shrink: 0;
 }
 
 /* Inputs */
@@ -224,7 +228,7 @@ h1, h2, h3, h4, .font-serif {
   border-radius: var(--radius-sm);
   color: var(--text-primary);
   font-family: var(--font-sans);
-  font-size: 0.95rem;
+  font-size: 1rem;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
   outline: none;
 }
@@ -260,7 +264,7 @@ h1, h2, h3, h4, .font-serif {
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   display: flex;
@@ -305,32 +309,108 @@ h1, h2, h3, h4, .font-serif {
   animation: heartBeat 0.45s ease-in-out;
 }
 
-/* Toast Notification */
-.toast-container {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 200;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+/* ====================================================
+   📱 MOBILE-FIRST RESPONSIVE OPTIMIZATIONS
+   ==================================================== */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 74px; /* Native bottom navigation space */
+  }
+
+  .container {
+    padding: 0 16px;
+  }
+
+  /* Modals on mobile fill the screen like a native mobile app */
+  .modal-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .modal-content {
+    max-width: 100vw !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+    border: none !important;
+    padding: 20px 16px !important;
+  }
+
+  .glass-nav {
+    height: 60px !important;
+  }
+
+  .poem-stanza {
+    font-size: 1.15rem;
+    line-height: 1.95;
+  }
+
+  /* Hide desktop center nav links on mobile */
+  .desktop-nav-links {
+    display: none !important;
+  }
+
+  /* Mobile Bottom Navigation Bar */
+  .mobile-bottom-nav {
+    display: flex !important;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: var(--bg-glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid var(--border-color);
+    z-index: 60;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 4px;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .mobile-bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 8px;
+    transition: all 0.15s ease;
+    flex: 1;
+  }
+
+  .mobile-bottom-nav-item.active {
+    color: var(--accent-gold);
+    font-weight: 700;
+  }
+
+  /* Horizontal swipeable category row */
+  .category-scroll-container {
+    display: flex !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    gap: 8px !important;
+    padding-bottom: 6px !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    justify-content: flex-start !important;
+  }
+  .category-scroll-container::-webkit-scrollbar {
+    display: none;
+  }
 }
 
-.toast {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 20px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
-  color: var(--text-primary);
-  font-size: 0.925rem;
-  animation: slideInRight 0.3s ease-out;
-}
-
-@keyframes slideInRight {
-  from { opacity: 0; transform: translateX(40px); }
-  to { opacity: 1; transform: translateX(0); }
+@media (min-width: 769px) {
+  .mobile-bottom-nav {
+    display: none !important;
+  }
 }

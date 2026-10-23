@@ -95,8 +95,8 @@ export default function Hero({
           )}
         </div>
 
-        {/* Categories Pills */}
-        <div style={{ 
+        {/* Categories Pills (Swipeable on Mobile) */}
+        <div className="category-scroll-container" style={{ 
           display: 'flex', 
           alignItems: 'center', 
           justifyContent: 'center', 
@@ -106,7 +106,7 @@ export default function Hero({
           <button 
             className={`btn ${selectedCategory === null ? 'btn-primary' : 'btn-secondary'}`}
             onClick={() => setSelectedCategory(null)}
-            style={{ fontSize: '0.82rem', padding: '6px 16px' }}
+            style={{ fontSize: '0.82rem', padding: '6px 16px', flexShrink: 0 }}
           >
             Barcha janrlar
           </button>
@@ -115,7 +115,7 @@ export default function Hero({
               key={cat.id}
               className={`btn ${selectedCategory === cat.slug ? 'btn-primary' : 'btn-secondary'}`}
               onClick={() => setSelectedCategory(selectedCategory === cat.slug ? null : cat.slug)}
-              style={{ fontSize: '0.82rem', padding: '6px 16px' }}
+              style={{ fontSize: '0.82rem', padding: '6px 16px', flexShrink: 0 }}
             >
               {cat.name} {cat.poems_count ? `(${cat.poems_count})` : ''}
             </button>

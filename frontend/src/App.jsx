@@ -7,7 +7,7 @@ import ContactSection from './components/ContactSection';
 import PoetAdminDashboard from './components/PoetAdminDashboard';
 import Footer from './components/Footer';
 import { api } from './api';
-import { Sparkles, BookOpen, Feather, Search, Heart, RefreshCw } from 'lucide-react';
+import { Sparkles, BookOpen, Feather, Search, Heart, RefreshCw, Send, ShieldCheck } from 'lucide-react';
 
 export default function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem('sheriyat_theme') || 'light');
@@ -251,6 +251,50 @@ export default function App() {
         }}
         onDataChanged={fetchData}
       />
+
+      {/* Native Mobile App Style Bottom Navigation Bar */}
+      <nav className="mobile-bottom-nav">
+        <button 
+          className={`mobile-bottom-nav-item ${activeTab === 'all' ? 'active' : ''}`}
+          onClick={() => { setActiveTab('all'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+        >
+          <BookOpen size={19} />
+          <span>Barchasi</span>
+        </button>
+
+        <button 
+          className={`mobile-bottom-nav-item ${activeTab === 'poem' ? 'active' : ''}`}
+          onClick={() => { setActiveTab('poem'); window.scrollTo({ top: 200, behavior: 'smooth' }); }}
+        >
+          <Feather size={19} />
+          <span>She'rlar</span>
+        </button>
+
+        <button 
+          className={`mobile-bottom-nav-item ${activeTab === 'thought' ? 'active' : ''}`}
+          onClick={() => { setActiveTab('thought'); window.scrollTo({ top: 200, behavior: 'smooth' }); }}
+        >
+          <Sparkles size={19} />
+          <span>G'oyalar</span>
+        </button>
+
+        <button 
+          className="mobile-bottom-nav-item"
+          onClick={scrollToContact}
+        >
+          <Send size={19} />
+          <span>Bog'lanish</span>
+        </button>
+
+        <button 
+          className="mobile-bottom-nav-item"
+          onClick={() => setIsAdminModalOpen(true)}
+          style={{ color: isPoetLoggedIn ? 'var(--accent-gold)' : undefined }}
+        >
+          <ShieldCheck size={19} />
+          <span>{isPoetLoggedIn ? "Kabinet" : "Shoir"}</span>
+        </button>
+      </nav>
 
     </div>
   );
