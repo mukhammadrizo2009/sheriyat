@@ -1,8 +1,33 @@
 // API client for Sheriyat platform
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL 
-  ? (import.meta.env.VITE_API_BASE_URL.startsWith('http') ? import.meta.env.VITE_API_BASE_URL : `https://${import.meta.env.VITE_API_BASE_URL}`)
-  : (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? '' : 'http://127.0.0.1:8000');
+function getBaseUrl() {
+  const envUrl = import.meta.env.VITE_API_BASE_URL?.trim();
+  if (envUrl) {
+    const formatted = envUrl.startsWith('http') ? envUrl : `https://${envUrl}`;
+    return formatted.replace(/\/+$/, '');
+  }
+
+  if (typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+
+    // Agar frontend alohida static site bo'lib (masalan sheriyat-frontend.onrender.com),
+    // backend sheriyat-backend.onrender.com da joylashgan bo'lsa:
+    if (hostname.includes('sheriyat-frontend')) {
+      return `https://${hostname.replace('sheriyat-frontend', 'sheriyat-backend')}`;
+    }
+
+    // Agar ilova deploy qilingan bo'lsa (Django Reactni o'zi uzatayotgan bo'lsa yoki bitta domenda bo'lsa):
+    // Nisbiy yo'l '' brauzerni avtomatik joriy domendagi /api ga yo'naltiradi.
+    if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+      return '';
+    }
+  }
+
+  // Mahalliy ishlab chiqish (Vite dev server /api ni Django port 8000 ga proxy qiladi)
+  return '';
+}
+
+const BASE_URL = getBaseUrl();
 
 export { BASE_URL };
 
@@ -37,6 +62,9 @@ async function request(endpoint, options = {}) {
     return await res.json();
   } catch (err) {
     console.error(`API Error on ${endpoint}:`, err);
+    if (err.message === 'Failed to fetch' || err.name === 'TypeError') {
+      throw new Error("Serverga ulanib bo'lmadi. Server uyg'onmoqda (Render bepul rejim) yoki internet aloqasini tekshiring.");
+    }
     throw err;
   }
 }

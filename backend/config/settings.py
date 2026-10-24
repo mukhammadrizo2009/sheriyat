@@ -132,6 +132,19 @@ if cors_allowed:
     CORS_ALLOWED_ORIGINS = [origin.strip() for origin in cors_allowed.split(',')]
 CORS_ALLOW_CREDENTIALS = True
 
+# CSRF Trusted Origins (Render va mahalliy rivojlantirish uchun)
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.onrender.com',
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+]
+csrf_trusted = os.getenv('CSRF_TRUSTED_ORIGINS')
+if csrf_trusted:
+    CSRF_TRUSTED_ORIGINS.extend([origin.strip() for origin in csrf_trusted.split(',')])
+
+
 # Telegram Bot sozlamalari
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '8366867582:AAFqSv0QJuP87xdb17vHZNDxwi0WXwd67PQ')
 TELEGRAM_ADMIN_CHAT_ID = os.getenv('TELEGRAM_ADMIN_CHAT_ID', '6293681152')

@@ -9,6 +9,10 @@ def serve_react_app(request, path=""):
     Barcha yo'nalishlar (masalan / yoki /admin-login) frontend index.html ga yo'naltiriladi.
     """
     dist_dir = settings.BASE_DIR.parent / 'frontend' / 'dist'
+    if not dist_dir.exists():
+        dist_dir = settings.BASE_DIR / 'dist'
+    if not dist_dir.exists():
+        dist_dir = settings.BASE_DIR.parent / 'dist'
     
     # Agar maxsus fayl (masalan /assets/..., /favicon.svg) so'ralsa
     if path:
